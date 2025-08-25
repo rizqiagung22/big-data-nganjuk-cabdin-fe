@@ -97,10 +97,6 @@ const currentUser = {
 };
 
 onMounted(async () => {
-})
-
-
-onMounted(async () => {
   const authToken = localStorage.getItem('auth_token');
   if (authToken && !authStore.isAuthenticated) {
     try {
