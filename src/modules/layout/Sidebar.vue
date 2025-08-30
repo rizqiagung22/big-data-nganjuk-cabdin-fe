@@ -45,7 +45,7 @@
               <div class="relative">
                 <component
                     :is="item.icon"
-                    class="h-5 w-5 transition-transform duration-200"
+                    class="h-4 w-4 transition-transform duration-200"
                     :class="{
                     'text-blue-300': item.isActive,
                     'group-hover:scale-110': !isCollapsed,
@@ -61,7 +61,7 @@
               </div>
               <span
                   v-if="!isCollapsed"
-                  class="ml-3 transition-all duration-200"
+                  class="ml-3 transition-all duration-200 text-sm"
                   :class="{
                   'font-medium': item.isActive,
                   'group-hover:translate-x-1': !item.isActive

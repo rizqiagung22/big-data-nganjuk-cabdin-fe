@@ -4,9 +4,10 @@ import {onMounted, ref, watch} from "vue";
 import PageSizeSelector from "../../../core/components/PageSizeSelector.vue";
 import DataTable from "../../../core/components/DataTable.vue";
 import {
+  addFileApiBpopp,
   deleteFileApiBpopp,
   getApiBpopp,
-  getDownloadFileApiBpopp
+  getDownloadFileApiBpopp, updateFileApiBpopp
 } from "@/modules/admin/services/admin.service.ts";
 import {useTahunStore} from "@/core/stores/tahun.strore.ts";
 import FilterBpopp from "@/modules/admin/components/FilterBpopp.vue";
@@ -90,14 +91,60 @@ const handleDownload = async (item : any, type : string) => {
 const handleRemove = async (item : any, type : string) => {
   try {
     await  deleteFileApiBpopp(item.laporan?.[type]?.id );
+    await fetchBpopp();
   } catch (error : any){
     if(error.status == 404){
-      alert('Gagal mengunduh file. File tidak ditemukan.');
+      alert('Gagal mengahapus file. File tidak ditemukan.');
     } else {
-      alert('Gagal mengunduh file. Silakan coba lagi.');
+      alert('Gagal mengahapus file. Silakan coba lagi.');
     }
   }
 }
+
+const handleUpload = async (event: Event, item : any, type : string, idHtml : string) => {
+  try {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      const formData = new FormData();
+      formData.append('report_file', target.files[0]);
+      await updateFileApiBpopp(item.laporan?.[type]?.id, formData);
+      await fetchBpopp();
+    }
+  } catch (error : any){
+    alert('Gagal upload file');
+  }
+  finally {
+    const inputElement = document.getElementById(idHtml) as HTMLInputElement;
+    if (inputElement) {
+      inputElement.value = '';
+    }
+  }
+}
+const handleUploadAdd = async (event: Event, item : any, type : string, idHtml : string) => {
+  try {
+    const target = event.target as HTMLInputElement;
+    if(filterAdminBpoppStore.tahun){
+      if (target.files && target.files.length > 0) {
+        const formData = new FormData();
+        formData.append('tahun_id', filterAdminBpoppStore.tahun.toString());
+        formData.append('lembaga_id', item.lembaga.id);
+        formData.append('jenis_laporan', type);
+        formData.append('report_file', target.files[0]);
+        await addFileApiBpopp(formData);
+        await fetchBpopp();
+      }
+    }
+  } catch (error : any){
+    alert('Gagal menambahkan file');
+  }
+  finally {
+    const inputElement = document.getElementById(idHtml) as HTMLInputElement;
+    if (inputElement) {
+      inputElement.value = '';
+    }
+  }
+}
+
 
 </script>
 
@@ -132,7 +179,9 @@ const handleRemove = async (item : any, type : string) => {
               <TrashIcon class="h-5 w-5" />
             </div>
             <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
-              <CloudArrowUpIcon class="h-5 w-5" />
+              <label :for="`pagu${item.lembaga.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
+              <input v-if="item.laporan?.['pagu']" type="file" class="hidden" :id="`pagu${item.lembaga.id}`" @change="(event : Event) => handleUpload(event, item, 'pagu', `pagu${item.lembaga.id}`)"/>
+              <input v-else type="file" class="hidden" :id="`pagu${item.lembaga.id}`" @change="(event : Event) => handleUploadAdd(event, item, 'pagu', `pagu${item.lembaga.id}`)"/>
             </div>
           </div>
         </div>
@@ -141,14 +190,16 @@ const handleRemove = async (item : any, type : string) => {
         <div class="flex items-center space-x-2">
           <span class="text-gray-500 w-[80px] truncate">{{ item.laporan?.["rkas"]?.name_file ?? '' }}</span>
           <div class="flex gap-2">
-            <div  class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
+            <div @click="handleDownload(item, 'rkas')"  class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
             <div @click="handleRemove(item, 'rkas')"   class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
             <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
-              <CloudArrowUpIcon class="h-5 w-5" />
+              <label :for="`rkas${item.lembaga.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
+              <input v-if="item.laporan?.['rkas']" type="file" class="hidden" :id="`rkas${item.lembaga.id}`" @change="(event : Event) => handleUpload(event, item, 'rkas', `rkas${item.lembaga.id}`)"/>
+              <input v-else type="file" class="hidden" :id="`rkas${item.lembaga.id}`" @change="(event : Event) => handleUploadAdd(event, item, 'rkas', `rkas${item.lembaga.id}`)"/>
             </div>
           </div>
         </div>
@@ -157,14 +208,16 @@ const handleRemove = async (item : any, type : string) => {
         <div class="flex items-center space-x-2">
           <span class="text-gray-500 w-[80px] truncate">{{ item.laporan?.["realisasi"]?.name_file  ?? ''}}</span>
           <div class="flex gap-2">
-            <div  class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
+            <div @click="handleDownload(item, 'realisasi')" class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
             <div   @click="handleRemove(item, 'realisasi')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
             <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
-              <CloudArrowUpIcon class="h-5 w-5" />
+              <label :for="`realisasi${item.lembaga.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
+              <input v-if="item.laporan?.['realisasi']"  type="file" class="hidden" :id="`realisasi${item.lembaga.id}`" @change="(event : Event) => handleUpload(event, item, 'realisasi', `realisasi${item.lembaga.id}`)"/>
+              <input v-else type="file" class="hidden" :id="`realisasi${item.lembaga.id}`" @change="(event : Event) => handleUploadAdd(event, item, 'realisasi', `realisasi${item.lembaga.id}`)"/>
             </div>
           </div>
         </div>
@@ -173,14 +226,16 @@ const handleRemove = async (item : any, type : string) => {
         <div class="flex items-center space-x-2">
           <span class="text-gray-500 w-[80px] truncate">{{ item.laporan?.["usulan per bulan"]?.name_file ?? '' }}</span>
           <div class="flex gap-2">
-            <div  class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
+            <div @click="handleDownload(item, 'usulan per bulan')" class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
             <div   @click="handleRemove(item, 'usulan per bulan')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
             <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
-              <CloudArrowUpIcon class="h-5 w-5" />
+              <label  :for="`usulan_per_bulan${item.lembaga.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
+              <input v-if="item.laporan?.['usulan per bulan']"  type="file" class="hidden" :id="`usulan_per_bulan${item.lembaga.id}`" @change="(event : Event) => handleUpload(event, item, 'usulan per bulan', `usulan_per_bulan${item.lembaga.id}`)"/>
+              <input v-else type="file" class="hidden" :id="`usulan_per_bulan${item.lembaga.id}`" @change="(event : Event) => handleUploadAdd(event, item, 'usulan per bulan', `usulan_per_bulan${item.lembaga.id}`)"/>
             </div>
           </div>
         </div>
@@ -189,14 +244,16 @@ const handleRemove = async (item : any, type : string) => {
         <div class="flex items-center space-x-2">
           <span class="text-gray-500 w-[80px] truncate">{{ item.laporan?.["penyerapan tiap bulan"]?.name_file  ?? '' }}</span>
           <div class="flex gap-2">
-            <div  class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
+            <div @click="handleDownload(item, 'penyerapan tiap bulan')"  class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
             <div @click="handleRemove(item, 'penyerapan tiap bulan')"  class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
-            <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
-              <CloudArrowUpIcon class="h-5 w-5" />
+            <div @click="handleDownload(item, 'penyerapan tiap bulan')" class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
+              <label  :for="`penyerapan_tiap_bulan${item.lembaga.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
+              <input v-if="item.laporan?.['penyerapan tiap bulan']"  type="file" class="hidden" :id="`penyerapan_tiap_bulan${item.lembaga.id}`" @change="(event : Event) => handleUpload(event, item, 'penyerapan tiap bulan', `penyerapan_tiap_bulan${item.lembaga.id}`)"/>
+              <input v-else type="file" class="hidden" :id="`penyerapan_tiap_bulan${item.lembaga.id}`" @change="(event : Event) => handleUploadAdd(event, item, 'penyerapan tiap bulan', `penyerapan_tiap_bulan${item.lembaga.id}`)"/>
             </div>
           </div>
         </div>

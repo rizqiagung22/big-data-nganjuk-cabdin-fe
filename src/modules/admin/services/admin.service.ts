@@ -36,3 +36,30 @@ export const deleteFileApiBpopp = async (id: any) => {
     throw error.response;
   }
 };
+
+
+export const addFileApiBpopp = async (formData: FormData) => {
+  try {
+    await http.post<any>(`/bpopp`,formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+  } catch (error: any) {
+    console.error("Error caught in catch:", error);
+    throw error.response;
+  }
+};
+
+export const updateFileApiBpopp = async (id: any, formData: FormData) => {
+  try {
+    await http.post<any>(`/bpopp/update-file/${id}`,formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+  } catch (error: any) {
+    console.error("Error caught in catch:", error);
+    throw error.response;
+  }
+};
