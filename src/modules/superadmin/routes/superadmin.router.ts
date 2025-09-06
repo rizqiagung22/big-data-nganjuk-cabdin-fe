@@ -37,6 +37,10 @@ const routes: RouteRecordRaw[] = [
         path: "data-guru-dan-tenaga-pendidikan",
         component: () => import("../views/DataGuruDanTenagaPendidikan.vue"),
       },
+      {
+        path: "tahun",
+        component: () => import("../views/Tahun.vue"),
+      },
     ]
   },
 ];

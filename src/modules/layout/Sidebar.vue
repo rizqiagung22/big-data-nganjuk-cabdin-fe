@@ -185,7 +185,13 @@ watch(()=> authStore.user.role, (value : string) => {
         path: '/super-admin/data-guru-dan-tenaga-pendidikan',
         icon: CalendarIcon,
         isActive: false
-      }
+      },
+      {
+        name: 'Tahun',
+        path: '/super-admin/tahun',
+        icon: CalendarIcon,
+        isActive: true
+      },
     ]
   }
   else if(value && value === 'admin'){
@@ -277,7 +283,7 @@ watch(()=> authStore.user.role, (value : string) => {
         path: '/user/data-guru-dan-tenaga-pendidikan',
         icon: CalendarIcon,
         isActive: false
-      }
+      },
     ]
   }
 }, {immediate:true})

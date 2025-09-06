@@ -19,6 +19,7 @@
     "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.12",
     "@types/file-saver": "^2.0.7",
+    "@vuepic/vue-datepicker": "^11.0.2",
     "axios": "^1.11.0",
     "buffer": "^6.0.3",
     "file-saver": "^2.0.5",
