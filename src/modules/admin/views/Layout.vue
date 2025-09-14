@@ -14,7 +14,7 @@
     <div class="flex-1 flex flex-col overflow-hidden">
       <!-- Header -->
       <Header
-          :user="currentUser"
+          :user="authStore.user"
           :is-sidebar-collapsed="isSidebarCollapsed"
           @toggle-sidebar="isSidebarCollapsed = !isSidebarCollapsed"
       />
@@ -89,13 +89,6 @@ const closeModal = () => {
 };
 
 const isSidebarCollapsed = ref(true);
-const currentUser = {
-  name: 'Admin',
-  email: 'admin@',
-  role: 'Admin',
-  avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
-};
-
 onMounted(async () => {
   const authToken = localStorage.getItem('auth_token');
   if (authToken && !authStore.isAuthenticated) {

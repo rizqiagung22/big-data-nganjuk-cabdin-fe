@@ -18,6 +18,14 @@ const routes: RouteRecordRaw[] = [
           component: () => import("../views/BOS.vue"),
         },
         {
+          path: "bsm",
+          component: () => import("../views/BSM.vue"),
+        },
+        {
+          path: "bksm",
+          component: () => import("../views/BKSM.vue"),
+        },
+        {
           path: "asset",
           component: () => import("../views/Asset.vue"),
         },
@@ -36,6 +44,14 @@ const routes: RouteRecordRaw[] = [
         {
           path: "data-guru-dan-tenaga-pendidikan",
           component: () => import("../views/DataGuruDanTenagaPendidikan.vue"),
+        },
+        {
+          path: "tracer-study",
+          component: () => import("../views/TracerStudy.vue"),
+        },
+        {
+          path: "pendistribusian-ijazah",
+          component: () => import("../views/PendistribusianIjazah.vue"),
         },
       ]
     },

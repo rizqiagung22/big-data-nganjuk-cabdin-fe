@@ -1,5 +1,8 @@
 export interface UserDetail {
-    name: string;
-    email: string;
-    role: string;
+  name: string;
+  username: string;
+  email: string;
+  gender : string;
+  role: string;
+  avatar: string;
 }

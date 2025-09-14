@@ -16,16 +16,16 @@ import {
   TrashIcon,
   CloudArrowUpIcon
 } from '@heroicons/vue/24/outline';
-import {useFilterAdminBpoppStore} from "@/modules/admin/stores/admin.bpopp.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
+import {useFilterAdminBosStore} from "@/modules/admin/stores/admin.bos.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
 
 const tahunStore = useTahunStore();
-const filterAdminBpoppStore = useFilterAdminBpoppStore()
+const filterAdminBosStore = useFilterAdminBosStore()
 
 const tableData = ref<any[]>([]);
 
 
 const tableColumns = [
-  {key: 'lembaga', label: 'Nama Lembaga'},
+  {key: 'lembaga', label: 'Lembaga'},
   {key: 'pagu', label: 'Pagu'},
   {key: 'rkas', label: 'RKAS'},
   {key: 'realisasi', label: 'Realisasi'},
@@ -50,8 +50,8 @@ const fetchBpopp = async (needResetPagination = false) => {
   try {
     if(needResetPagination) resetPagination();
     const response = await getApiBpopp({
-      search : filterAdminBpoppStore.search,
-      tahun_id : filterAdminBpoppStore.tahun,
+      search : filterAdminBosStore.search,
+      tahun_id : filterAdminBosStore.tahun,
       page: pagination.value.currentPage,
       size : pagination.value.itemsPerPage,
     });
@@ -123,10 +123,10 @@ const handleUpload = async (event: Event, item : any, type : string, idHtml : st
 const handleUploadAdd = async (event: Event, item : any, type : string, idHtml : string) => {
   try {
     const target = event.target as HTMLInputElement;
-    if(filterAdminBpoppStore.tahun){
+    if(filterAdminBosStore.tahun){
       if (target.files && target.files.length > 0) {
         const formData = new FormData();
-        formData.append('tahun_id', filterAdminBpoppStore.tahun.toString());
+        formData.append('tahun_id', filterAdminBosStore.tahun.toString());
         formData.append('lembaga_id', item.lembaga.id);
         formData.append('jenis_laporan', type);
         formData.append('report_file', target.files[0]);

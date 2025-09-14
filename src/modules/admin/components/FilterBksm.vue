@@ -1,27 +1,27 @@
 <script setup lang="ts">
 import {onMounted, ref, watch} from 'vue';
 import {useTahunStore} from "@/core/stores/tahun.strore.ts";
-import {useFilterAdminBpoppStore} from "@/modules/admin/stores/admin.bpopp.store.ts";
+import {useFilterAdminBksmStore} from "@/modules/admin/stores/admin.bksm.store.ts";
 
 
-const filterAdminBpoppStore = useFilterAdminBpoppStore()
+const filterAdminBksmStore = useFilterAdminBksmStore();
 const tahunStore = useTahunStore();
 
 const searchValue = ref<any>('')
 const tahunValue = ref<any>(null)
 
 onMounted(async () => {
-  if (!filterAdminBpoppStore.tahun) {
+  if (!filterAdminBksmStore.tahun) {
     await tahunStore.fetchDataTahun();
     if (tahunStore.data.length > 0) {
-      filterAdminBpoppStore.setTahun(tahunStore.data[0].id)
+      filterAdminBksmStore.setTahun(tahunStore.data[0].id)
       tahunValue.value = tahunStore.data[0].id;
     }
   } else {
-    tahunValue.value = filterAdminBpoppStore.tahun;
+    tahunValue.value = filterAdminBksmStore.tahun;
     emit('submit', true);
   }
-  searchValue.value = filterAdminBpoppStore.search;
+  searchValue.value = filterAdminBksmStore.search;
 })
 
 const emit = defineEmits(['submit']);
@@ -29,11 +29,11 @@ const emit = defineEmits(['submit']);
 const resetForm = () => {
   searchValue.value = '';
   tahunValue.value = null;
-  filterAdminBpoppStore.resetFilter()
+  filterAdminBksmStore.resetFilter()
 }
 const submitForm = () => {
-  filterAdminBpoppStore.setSearch(searchValue.value)
-  filterAdminBpoppStore.setTahun(tahunValue.value)
+  filterAdminBksmStore.setSearch(searchValue.value)
+  filterAdminBksmStore.setTahun(tahunValue.value)
   emit('submit', true);
 }
 

@@ -38,7 +38,7 @@
           >
             <div class="relative">
               <img
-                  :src="user?.avatar"
+                  :src="user?.gender == 'L' ? '../../../src/core/assets/laki_laki.png' : '../../../src/core/assets/perempuan.png'"
                   alt="User"
                   class="h-8 w-8 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition-all duration-200"
               >
@@ -67,8 +67,7 @@
                 class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-xl py-1 z-50 border border-gray-100"
             >
               <div class="px-4 py-3 border-b">
-                <p class="text-sm font-medium text-gray-800">{{ user?.name }}</p>
-                <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
+                <p class="text-sm font-medium text-gray-800">{{ user?.username }}</p>
                 <p class="text-xs mt-1">
                   <span class="inline-flex items-center text-green-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

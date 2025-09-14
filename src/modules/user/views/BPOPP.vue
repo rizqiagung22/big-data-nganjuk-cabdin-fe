@@ -25,7 +25,7 @@ const tableData = ref<any[]>([]);
 
 
 const tableColumns = [
-  {key: 'lembaga', label: 'Nama Lembaga'},
+  {key: 'lembaga', label: 'Lembaga'},
   {key: 'pagu', label: 'Pagu'},
   {key: 'rkas', label: 'RKAS'},
   {key: 'realisasi', label: 'Realisasi'},

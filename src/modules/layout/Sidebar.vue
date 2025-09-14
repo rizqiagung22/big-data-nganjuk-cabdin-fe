@@ -181,9 +181,33 @@ watch(()=> authStore.user.role, (value : string) => {
         isActive: false
       },
       {
-        name: 'Data Guru dan Tenaga Pendidikan',
+        name: 'Data Guru dan Tenaga Kependidikan',
         path: '/super-admin/data-guru-dan-tenaga-pendidikan',
-        icon: CalendarIcon,
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'BSM',
+        path: '/super-admin/bsm',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'BKSM',
+        path: '/super-admin/bksm',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'Pendistribusian Ijazah',
+        path: '/super-admin/pendistribusian-ijazah',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'Tracer Study',
+        path: '/super-admin/tracer-study',
+        icon: DocumentTextIcon,
         isActive: false
       },
       {
@@ -223,7 +247,7 @@ watch(()=> authStore.user.role, (value : string) => {
       {
         name: 'PIP',
         path: '/admin/pip',
-        icon: CreditCardIcon,
+        icon: DocumentTextIcon,
         isActive: false
       },
       {
@@ -233,11 +257,35 @@ watch(()=> authStore.user.role, (value : string) => {
         isActive: false
       },
       {
-        name: 'Data Guru dan Tenaga Pendidikan',
+        name: 'Data Guru dan Tenaga Kependidikan',
         path: '/admin/data-guru-dan-tenaga-pendidikan',
-        icon: CalendarIcon,
+        icon: DocumentTextIcon,
         isActive: false
-      }
+      },
+      {
+        name: 'BSM',
+        path: '/admin/bsm',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'BKSM',
+        path: '/admin/bksm',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'Pendistribusian Ijazah',
+        path: '/admin/pendistribusian-ijazah',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'Tracer Study',
+        path: '/admin/tracer-study',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
     ]
   }
   else if(value && value === 'user'){
@@ -279,9 +327,33 @@ watch(()=> authStore.user.role, (value : string) => {
         isActive: false
       },
       {
-        name: 'Data Guru dan Tenaga Pendidikan',
+        name: 'Data Guru dan Tenaga Kependidikan',
         path: '/user/data-guru-dan-tenaga-pendidikan',
         icon: CalendarIcon,
+        isActive: false
+      },
+      {
+        name: 'BSM',
+        path: '/user/bsm',
+        icon: ClipboardDocumentListIcon,
+        isActive: false
+      },
+      {
+        name: 'BKSM',
+        path: '/user/bksm',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'Pendistribusian Ijazah',
+        path: '/user/pendistribusian-ijazah',
+        icon: DocumentTextIcon,
+        isActive: false
+      },
+      {
+        name: 'Tracer Study',
+        path: '/user/tracer-study',
+        icon: DocumentTextIcon,
         isActive: false
       },
     ]

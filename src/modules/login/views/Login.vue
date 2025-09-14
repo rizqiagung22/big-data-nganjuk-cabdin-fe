@@ -31,20 +31,20 @@
           <div class="space-y-5">
             <!-- Username Input -->
             <div>
-              <label class="block text-sm font-medium text-gray-200 mb-1">Email</label>
+              <label class="block text-sm font-medium text-gray-200 mb-1">Username</label>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <UserCircleIcon class="h-5 w-5 text-gray-400"/>
                 </div>
                 <input
-                    v-model="adminForm.email"
+                    v-model="adminForm.username"
                     type="text"
-                    placeholder="Masukkan email"
+                    placeholder="Masukkan username"
                     class="pl-10 w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none text-white placeholder-gray-400 transition"
-                    :class="{'border-red-500': errors.email}"
+                    :class="{'border-red-500': errors.username}"
                 >
               </div>
-              <p v-if="errors.email" class="mt-1 text-sm text-red-400">{{ errors.email }}</p>
+              <p v-if="errors.username" class="mt-1 text-sm text-red-400">{{ errors.username }}</p>
             </div>
 
             <!-- Password Input -->
@@ -107,8 +107,8 @@
       </div>
       <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-sm border border-gray-200">
         <h3 class="text-sm font-medium text-gray-700 mb-2">Demo User:</h3>
-        <p class="text-xs text-gray-600"><span class="font-medium">Email:</span> superadmin@cabdin.com</p>
-        <p class="text-xs text-gray-600"><span class="font-medium">Password:</span> password123</p>
+        <p class="text-xs text-gray-600"><span class="font-medium">Username:</span> rizqi123</p>
+        <p class="text-xs text-gray-600"><span class="font-medium">Password:</span> 123</p>
       </div>
     </div>
   </div>
@@ -136,12 +136,12 @@ const authStore = useAuthStore()
 const tahunStore = useTahunStore()
 
 const adminForm = ref({
-  email: '',
+  username: '',
   password: '',
 })
 
 const errors = ref({
-  email: '',
+  username: '',
   password: ''
 })
 
@@ -150,7 +150,7 @@ const handleLogin = async () => {
     isLoading.value = true
     const deviceName = navigator.userAgent;
     const payload = {
-      email: adminForm.value.email,
+      username: adminForm.value.username,
       password: adminForm.value.password,
       device_name: deviceName // <- Ini dia yang dikirim!
     }
@@ -163,8 +163,8 @@ const handleLogin = async () => {
     }
     handleNavigation(response.data.user.role)
   } catch (e) {
-    errors.value.email = 'Email atau password Anda salah'
-    errors.value.password = 'Email atau password Anda salah'
+    errors.value.username = 'Username atau password Anda salah'
+    errors.value.password = 'Username atau password Anda salah'
   } finally {
     isLoading.value = false
   }
