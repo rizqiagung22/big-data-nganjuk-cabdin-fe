@@ -1,39 +1,42 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from 'vue';
-import {useTahunStore} from "@/core/stores/tahun.strore.ts";
+import {nextTick, onMounted, ref} from 'vue';
 import {useFilterAdminBosStore} from "@/modules/admin/stores/admin.bos.store.ts";
+import {getApiTahun} from "@/core/services/global.service.ts";
 
 
-const filterAdminBosStore = useFilterAdminBosStore()
-const tahunStore = useTahunStore();
+const filterAdmin = useFilterAdminBosStore()
 
 const searchValue = ref<any>('')
 const tahunValue = ref<any>(null)
 
 onMounted(async () => {
-  if (!filterAdminBosStore.tahun) {
-    await tahunStore.fetchDataTahun();
-    if (tahunStore.data.length > 0) {
-      filterAdminBosStore.setTahun(tahunStore.data[0].id)
-      tahunValue.value = tahunStore.data[0].id;
-    }
-  } else {
-    tahunValue.value = filterAdminBosStore.tahun;
-    emit('submit', true);
+  await fetchDataTahun();
+
+  if(filterAdmin.tahun !== null) {
+    tahunValue.value = filterAdmin.tahun;
+    await nextTick()
+    submitForm();
   }
-  searchValue.value = filterAdminBosStore.search;
 })
+const fetchDataTahun = async () => {
+  try {
+    const response = await getApiTahun();
+    filterAdmin.setTahunList(response.data.data)
+  } catch (error : any){
+    console.log(error)
+  }
+}
 
 const emit = defineEmits(['submit']);
 
 const resetForm = () => {
   searchValue.value = '';
   tahunValue.value = null;
-  filterAdminBosStore.resetFilter()
+  filterAdmin.resetFilter()
 }
 const submitForm = () => {
-  filterAdminBosStore.setSearch(searchValue.value)
-  filterAdminBosStore.setTahun(tahunValue.value)
+  filterAdmin.setSearch(searchValue.value)
+  filterAdmin.setTahun(tahunValue.value)
   emit('submit', true);
 }
 
@@ -48,7 +51,7 @@ const submitForm = () => {
         <label for="tahun" class="w-1/4 text-sm font-medium text-gray-700 pr-4">Tahun</label>
         <div class="w-3/4 relative">
           <input
-            v-if="tahunStore.data.length == 0"
+            v-if="filterAdmin.tahunList.length == 0"
             type="text"
             id="tahun"
             placeholder="Tidak ada data tahun"
@@ -62,7 +65,7 @@ const submitForm = () => {
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
           >
             <option
-              v-for="item in tahunStore.data"
+              v-for="item in filterAdmin.tahunList"
               :key="item.id"
               :value="item.id"
             >

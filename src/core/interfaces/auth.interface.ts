@@ -4,5 +4,6 @@ export interface UserDetail {
   email: string;
   gender : string;
   role: string;
+  position: string;
   avatar: string;
 }

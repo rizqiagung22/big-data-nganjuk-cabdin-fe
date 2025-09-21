@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {nextTick, onMounted, ref} from 'vue';
-import {useFilterAdminBpoppStore} from "@/modules/admin/stores/admin.bpopp.store.ts";
 import {getApiTahun} from "@/core/services/global.service.ts";
+import {
+  useFilterAdminPrestasiSiswaStore
+} from "@/modules/admin/stores/admin.prestasi-siswa.store.ts";
 
-
-const filterAdmin = useFilterAdminBpoppStore()
+const filterAdmin = useFilterAdminPrestasiSiswaStore()
 
 const searchValue = ref<any>('')
 const tahunValue = ref<any>(null)

@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
+import type {TahunInterface} from "@/core/interfaces/tahun.interface.ts";
 
 
 export const useFilterAdminBosStore = defineStore("FilterAdminBos", {
   state: () => ({
     search: '' as string,
-    tahun : null as number | null
+    tahun : null as number | null,
+    tahunList : [] as TahunInterface[]
   }),
   actions: {
     setSearch(value : string) {
@@ -12,6 +14,9 @@ export const useFilterAdminBosStore = defineStore("FilterAdminBos", {
     },
     setTahun(value : number) {
       this.tahun = value;
+    },
+    setTahunList(value : any[]) {
+      this.tahunList = value;
     },
     resetFilter(){
       this.search = '';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {onMounted, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import PageSizeSelector from "../../../core/components/PageSizeSelector.vue";
 import DataTable from "../../../core/components/DataTable.vue";
 import {
@@ -10,19 +10,15 @@ import {
   getDownloadFileApiBos,
   updateFileApiBos
 } from "@/modules/admin/services/admin.service.ts";
-import {useTahunStore} from "@/core/stores/tahun.strore.ts";
-import FilterBpopp from "@/modules/admin/components/FilterBpopp.vue";
 import {
   ArrowDownTrayIcon,
   TrashIcon,
   CloudArrowUpIcon
 } from '@heroicons/vue/24/outline';
-import {useFilterAdminBpoppStore} from "@/modules/admin/stores/admin.bpopp.store.ts";
-import FilterBos from "@/modules/admin/components/FilterBos.vue"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
+import FilterBos from "@/modules/admin/components/FilterBos.vue";
+import {useFilterAdminBosStore} from "@/modules/admin/stores/admin.bos.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
 
-const tahunStore = useTahunStore();
-const filterAdminBpoppStore = useFilterAdminBpoppStore()
-
+const filterAdmin = useFilterAdminBosStore()
 const tableData = ref<any[]>([]);
 
 
@@ -52,8 +48,8 @@ const fetchData = async (needResetPagination = false) => {
   try {
     if(needResetPagination) resetPagination();
     const response = await getApiBos({
-      search : filterAdminBpoppStore.search,
-      tahun_id : filterAdminBpoppStore.tahun,
+      search : filterAdmin.search,
+      tahun_id : filterAdmin.tahun,
       page: pagination.value.currentPage,
       size : pagination.value.itemsPerPage,
     });
@@ -125,10 +121,10 @@ const handleUpload = async (event: Event, item : any, type : string, idHtml : st
 const handleUploadAdd = async (event: Event, item : any, type : string, idHtml : string) => {
   try {
     const target = event.target as HTMLInputElement;
-    if(filterAdminBpoppStore.tahun){
+    if(filterAdmin.tahun){
       if (target.files && target.files.length > 0) {
         const formData = new FormData();
-        formData.append('tahun_id', filterAdminBpoppStore.tahun.toString());
+        formData.append('tahun_id', filterAdmin.tahun.toString());
         formData.append('lembaga_id', item.lembaga.id);
         formData.append('jenis_laporan', type);
         formData.append('report_file', target.files[0]);

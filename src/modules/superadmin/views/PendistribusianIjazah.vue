@@ -1,27 +1,26 @@
 <script setup lang="ts">
 
-import {onMounted, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import PageSizeSelector from "../../../core/components/PageSizeSelector.vue";
 import DataTable from "../../../core/components/DataTable.vue";
 import {
-  addFileApiPendistribusianIjazah,
   deleteFileApiPendistribusianIjazah,
   getApiPendistribusianIjazah,
   getDownloadFileApiPendistribusianIjazah,
   updateFileApiPendistribusianIjazah
 } from "@/modules/admin/services/pendistribusian-ijazah.service.ts";
-import {useTahunStore} from "@/core/stores/tahun.strore.ts";
-import FilterBpopp from "@/modules/admin/components/FilterBpopp.vue";
 import {
   ArrowDownTrayIcon,
   TrashIcon,
   CloudArrowUpIcon
 } from '@heroicons/vue/24/outline';
-import {useFilterAdminBosStore} from "@/modules/admin/stores/admin.bos.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
+import FilterPendistribusianIjazah
+  from "@/modules/admin/components/FilterPendistribusianIjazah.vue";
+import {
+  useFilterAdminPendistribusianIjazahStore
+} from "@/modules/admin/stores/admin.pendistribusian-ijazah.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
 
-const tahunStore = useTahunStore();
-const filterAdminBosStore = useFilterAdminBosStore()
-
+const filterAdmin = useFilterAdminPendistribusianIjazahStore()
 const tableData = ref<any[]>([]);
 
 
@@ -47,8 +46,8 @@ const fetchData = async (needResetPagination = false) => {
   try {
     if(needResetPagination) resetPagination();
     const response = await getApiPendistribusianIjazah({
-      search : filterAdminBosStore.search,
-      tahun_id : filterAdminBosStore.tahun,
+      search : filterAdmin.search,
+      tahun_id : filterAdmin.tahun,
       page: pagination.value.currentPage,
       size : pagination.value.itemsPerPage,
     });
@@ -126,7 +125,7 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
   <div class="mb-4">
     <h1 class="text-2xl font-bold text-gray-800">Pendistribusian Ijazah</h1>
   </div>
-  <FilterBpopp class="mb-4" @submit="fetchData"></FilterBpopp>
+  <FilterPendistribusianIjazah class="mb-4" @submit="fetchData"></FilterPendistribusianIjazah>
   <div class="bg-white rounded-lg shadow overflow-hidden">
     <!-- Table Header -->
     <!-- Table -->

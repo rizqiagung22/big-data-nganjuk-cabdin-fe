@@ -1,26 +1,23 @@
 <script setup lang="ts">
 
-import {onMounted, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import PageSizeSelector from "../../../core/components/PageSizeSelector.vue";
 import DataTable from "../../../core/components/DataTable.vue";
 import {
-  addFileApiBksm,
   deleteFileApiBksm,
   getApiBksm,
   getDownloadFileApiBksm,
   updateFileApiBksm
 } from "@/modules/admin/services/bksm.service.ts";
-import {useTahunStore} from "@/core/stores/tahun.strore.ts";
-import FilterBpopp from "@/modules/admin/components/FilterBpopp.vue";
 import {
   ArrowDownTrayIcon,
   TrashIcon,
   CloudArrowUpIcon
 } from '@heroicons/vue/24/outline';
-import {useFilterAdminBosStore} from "@/modules/admin/stores/admin.bos.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
+import {useFilterAdminBksmStore} from "@/modules/admin/stores/admin.bksm.store.ts";
+import FilterBksm from "@/modules/admin/components/FilterBksm.vue"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
 
-const tahunStore = useTahunStore();
-const filterAdminBosStore = useFilterAdminBosStore()
+const filterAdmin = useFilterAdminBksmStore()
 
 const tableData = ref<any[]>([]);
 
@@ -45,10 +42,11 @@ const resetPagination = () => {
 
 const fetchData = async (needResetPagination = false) => {
   try {
+    console.log(filterAdmin.search, filterAdmin.tahun)
     if(needResetPagination) resetPagination();
     const response = await getApiBksm({
-      search : filterAdminBosStore.search,
-      tahun_id : filterAdminBosStore.tahun,
+      search : filterAdmin.search,
+      tahun_id : filterAdmin.tahun,
       page: pagination.value.currentPage,
       size : pagination.value.itemsPerPage,
     });
@@ -127,7 +125,7 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
     <h1 class="text-2xl font-bold text-gray-800">BKSM</h1>
     <p class="text-gray-600">Bantuan Khusus Siswa Miskin</p>
   </div>
-  <FilterBpopp class="mb-4" @submit="fetchData"></FilterBpopp>
+  <FilterBksm class="mb-4" @submit="fetchData"></FilterBksm>
   <div class="bg-white rounded-lg shadow overflow-hidden">
     <!-- Table Header -->
     <!-- Table -->

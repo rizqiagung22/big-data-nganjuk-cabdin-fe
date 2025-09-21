@@ -1,26 +1,27 @@
 <script setup lang="ts">
 
-import {onMounted, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import PageSizeSelector from "../../../core/components/PageSizeSelector.vue";
 import DataTable from "../../../core/components/DataTable.vue";
 import {
-  addFileApiPrestasiSiswa,
   deleteFileApiPrestasiSiswa,
   getApiPrestasiSiswa,
   getDownloadFileApiPrestasiSiswa,
   updateFileApiPrestasiSiswa
 } from "@/modules/admin/services/prestasi-siswa.service.ts";
-import {useTahunStore} from "@/core/stores/tahun.strore.ts";
-import FilterBpopp from "@/modules/admin/components/FilterBpopp.vue";
 import {
   ArrowDownTrayIcon,
   TrashIcon,
   CloudArrowUpIcon
 } from '@heroicons/vue/24/outline';
-import {useFilterAdminBosStore} from "@/modules/admin/stores/admin.bos.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
+import FilterPrestasiSiswa from "@/modules/admin/components/FilterPrestasiSiswa.vue";
+import {
+  useFilterAdminPrestasiSiswaStore
+} from "@/modules/admin/stores/admin.prestasi-siswa.store.ts";
+import {useAuthStore} from "@/core/stores/auth.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
 
-const tahunStore = useTahunStore();
-const filterAdminBosStore = useFilterAdminBosStore()
+const filterAdmin = useFilterAdminPrestasiSiswaStore()
+const userStore = useAuthStore()
 
 const tableData = ref<any[]>([]);
 
@@ -51,8 +52,8 @@ const fetchData = async (needResetPagination = false) => {
   try {
     if(needResetPagination) resetPagination();
     const response = await getApiPrestasiSiswa({
-      search : filterAdminBosStore.search,
-      tahun_id : filterAdminBosStore.tahun,
+      search : filterAdmin.search,
+      tahun_id : filterAdmin.tahun,
       page: pagination.value.currentPage,
       size : pagination.value.itemsPerPage,
     });
@@ -130,7 +131,7 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
   <div class="mb-4">
     <h1 class="text-2xl font-bold text-gray-800">Prestasi Siswa</h1>
   </div>
-  <FilterBpopp class="mb-4" @submit="fetchData"></FilterBpopp>
+  <FilterPrestasiSiswa class="mb-4" @submit="fetchData"></FilterPrestasiSiswa>
   <div class="bg-white rounded-lg shadow overflow-hidden">
     <!-- Table Header -->
     <!-- Table -->
@@ -152,10 +153,10 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
             <div @click="handleDownload(item.kecamatan, 'kecamatan')" class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
-            <div @click="handleRemove(item.kecamatan, 'kecamatan')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
+            <div v-if="userStore.user.role != 'user'"  @click="handleRemove(item.kecamatan, 'kecamatan')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
-            <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
+            <div v-if="userStore.user.role != 'user'"   class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
               <label :for="`kecamatan${item.kecamatan.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
               <input type="file" class="hidden" :id="`kecamatan${item.kecamatan.id}`" @change="(event : Event) => handleUpload(event, item.kecamatan, 'kecamatan', `kecamatan${item.kecamatan.id}`)"/>
             </div>
@@ -169,10 +170,10 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
             <div @click="handleDownload(item.kabupaten, 'kabupaten')" class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
-            <div @click="handleRemove(item.kabupaten, 'kabupaten')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
+            <div v-if="userStore.user.role != 'user'"  @click="handleRemove(item.kabupaten, 'kabupaten')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
-            <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
+            <div v-if="userStore.user.role != 'user'"   class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
               <label :for="`kabupaten${item.kabupaten.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
               <input type="file" class="hidden" :id="`kabupaten${item.kabupaten.id}`" @change="(event : Event) => handleUpload(event, item.kabupaten, 'kabupaten', `kabupaten${item.kabupaten.id}`)"/>
             </div>
@@ -186,10 +187,10 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
             <div @click="handleDownload(item.provinsi, 'provinsi')" class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
-            <div @click="handleRemove(item.provinsi, 'provinsi')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
+            <div v-if="userStore.user.role != 'user'"  @click="handleRemove(item.provinsi, 'provinsi')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
-            <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
+            <div v-if="userStore.user.role != 'user'"   class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
               <label :for="`provinsi${item.provinsi.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
               <input type="file" class="hidden" :id="`provinsi${item.provinsi.id}`" @change="(event : Event) => handleUpload(event, item.provinsi, 'provinsi', `provinsi${item.provinsi.id}`)"/>
             </div>
@@ -203,10 +204,10 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
             <div @click="handleDownload(item.nasional, 'nasional')" class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
-            <div @click="handleRemove(item.nasional, 'nasional')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
+            <div v-if="userStore.user.role != 'user'"  @click="handleRemove(item.nasional, 'nasional')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
-            <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
+            <div v-if="userStore.user.role != 'user'"   class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
               <label :for="`nasional${item.nasional.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
               <input type="file" class="hidden" :id="`nasional${item.nasional.id}`" @change="(event : Event) => handleUpload(event, item.nasional, 'nasional', `nasional${item.nasional.id}`)"/>
             </div>
@@ -220,10 +221,10 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
             <div @click="handleDownload(item.internasional, 'internasional')" class="text-gray-400 hover:text-green-500 transition-colors" title="Download">
               <ArrowDownTrayIcon class="h-5 w-5" />
             </div>
-            <div @click="handleRemove(item.internasional, 'internasional')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
+            <div v-if="userStore.user.role != 'user'"  @click="handleRemove(item.internasional, 'internasional')" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
               <TrashIcon class="h-5 w-5" />
             </div>
-            <div  class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
+            <div v-if="userStore.user.role != 'user'"   class="text-gray-400 hover:text-blue-500 transition-colors" title="Upload">
               <label :for="`internasional${item.internasional.id}`"> <CloudArrowUpIcon class="h-5 w-5"/> </label>
               <input type="file" class="hidden" :id="`internasional${item.internasional.id}`" @change="(event : Event) => handleUpload(event, item.internasional, 'internasional', `internasional${item.internasional.id}`)"/>
             </div>

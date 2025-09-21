@@ -1,26 +1,22 @@
 <script setup lang="ts">
-
-import {onMounted, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import PageSizeSelector from "../../../core/components/PageSizeSelector.vue";
 import DataTable from "../../../core/components/DataTable.vue";
 import {
-  addFileApiTracerStudy,
   deleteFileApiTracerStudy,
   getApiTracerStudy,
   getDownloadFileApiTracerStudy,
   updateFileApiTracerStudy
 } from "@/modules/admin/services/tracer-study.service.ts";
-import {useTahunStore} from "@/core/stores/tahun.strore.ts";
-import FilterBpopp from "@/modules/admin/components/FilterBpopp.vue";
 import {
   ArrowDownTrayIcon,
   TrashIcon,
   CloudArrowUpIcon
 } from '@heroicons/vue/24/outline';
-import {useFilterAdminBosStore} from "@/modules/admin/stores/admin.bos.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
+import FilterTracerStudy from "@/modules/admin/components/FilterTracerStudy.vue";
+import {useFilterAdminTracerStudyStore} from "@/modules/admin/stores/admin.tracer-study.store.ts"; // Atau dari 24/solid jika Anda ingin ikon yang diisi
 
-const tahunStore = useTahunStore();
-const filterAdminBosStore = useFilterAdminBosStore()
+const filterAdmin = useFilterAdminTracerStudyStore()
 
 const tableData = ref<any[]>([]);
 
@@ -47,8 +43,8 @@ const fetchData = async (needResetPagination = false) => {
   try {
     if(needResetPagination) resetPagination();
     const response = await getApiTracerStudy({
-      search : filterAdminBosStore.search,
-      tahun_id : filterAdminBosStore.tahun,
+      search : filterAdmin.search,
+      tahun_id : filterAdmin.tahun,
       page: pagination.value.currentPage,
       size : pagination.value.itemsPerPage,
     });
@@ -126,7 +122,7 @@ const handleUpload = async (event: Event, item : any, _ : string, idHtml : strin
   <div class="mb-4">
     <h1 class="text-2xl font-bold text-gray-800">Tracer Study</h1>
   </div>
-  <FilterBpopp class="mb-4" @submit="fetchData"></FilterBpopp>
+  <FilterTracerStudy class="mb-4" @submit="fetchData"></FilterTracerStudy>
   <div class="bg-white rounded-lg shadow overflow-hidden">
     <!-- Table Header -->
     <!-- Table -->

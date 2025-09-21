@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {nextTick, onMounted, ref} from 'vue';
-import {useFilterAdminBpoppStore} from "@/modules/admin/stores/admin.bpopp.store.ts";
+import {nextTick, onMounted, ref, watch} from 'vue';
 import {getApiTahun} from "@/core/services/global.service.ts";
+import {useFilterAdminTracerStudyStore} from "@/modules/admin/stores/admin.tracer-study.store.ts";
 
 
-const filterAdmin = useFilterAdminBpoppStore()
+const filterAdmin = useFilterAdminTracerStudyStore()
 
 const searchValue = ref<any>('')
 const tahunValue = ref<any>(null)
@@ -46,7 +46,6 @@ const submitForm = () => {
   <div class="bg-white p-6 rounded-lg shadow-md mx-auto">
     <h2 class="text-xl font-semibold text-gray-800 mb-4">Filter Data</h2>
     <div >
-
       <div class="mb-6 flex items-center">
         <label for="tahun" class="w-1/4 text-sm font-medium text-gray-700 pr-4">Tahun</label>
         <div class="w-3/4 relative">

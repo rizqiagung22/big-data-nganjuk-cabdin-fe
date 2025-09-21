@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import type {TahunInterface} from "@/core/interfaces/tahun.interface.ts";
 
 
-export const useFilterAdminBpoppStore = defineStore("FilterAdminBpopp", {
+export const useFilterAdminPrestasiSiswaStore = defineStore("FilterAdminPrestasiSiswa", {
   state: () => ({
     search: '' as string,
     tahun : null as number | null,
