@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
   itemsPerPage: number;
   currentPage: number;
   // Deklarasi Tipe: Hanya sebutkan tipenya
-  needColumnNumber: boolean;
+  needColumnNumber?: boolean;
 }>(), {
   // Nilai Default Runtime: Didefinisikan di withDefaults
   needColumnNumber: true,
