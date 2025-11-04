@@ -33,7 +33,7 @@ const tableData = ref<any[]>([]);
 
 
 const tableColumns = [
-  {key: 'lembaga', label: ''},
+  {key: '', label: ''},
   // tw 1
   {key: 'bm_bos_tw_1', label: 'BOS'},
   {key: 'bm_bpopp_tw_1', label: 'BPOPP'},
@@ -213,48 +213,48 @@ const handleUploadSertifikatAndScan = async (event: Event, item: any, type: stri
       :data="tableData"
       :total-items="pagination.totalItems"
       :items-per-page="pagination.itemsPerPage"
+      :need-column-number="false"
       v-model:currentPage="pagination.currentPage"
     >
+
       <template v-slot:header>
-        <thead class="bg-gray-50">
         <tr>
-          <th></th>
           <th
-            class="min-w-[350px] px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+            rowspan="2"
+            class="border min-w-[350px] px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
             Data Pengurusan Barang Sekolah
           </th>
           <th colspan="4"
-              class="px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+              class="border px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
             <div class="flex justify-center items-center">
               <span>Belanja Modal Asset Triwulan 1</span>
             </div>
           </th>
           <th colspan="4"
-              class="px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+              class="border px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
             <div class="flex justify-center items-center">
               <span>Belanja Modal Asset Triwulan 2</span>
             </div>
           </th>
           <th colspan="4"
-              class="px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+              class="border px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
             <div class="flex justify-center items-center">
               <span>Belanja Modal Asset Triwulan 3</span>
             </div>
           </th>
           <th colspan="4"
-              class="px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+              class="border px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
             <div class="flex justify-center items-center">
               <span>Belanja Modal Asset Triwulan 4</span>
             </div>
           </th>
           <th colspan="4"
-              class="px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+              class="border px-6 py-8 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
             <div class="flex justify-center items-center">
               <span>Asset Tanah</span>
             </div>
           </th>
         </tr>
-        </thead>
       </template>
       <template #cell(lembaga)="{item}">
         <span class="text-gray-500">-</span>

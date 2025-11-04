@@ -8,13 +8,18 @@ interface Column {
 }
 
 // Komponen menerima props untuk kolom, data, dan paginasi
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   columns: Column[];
   data: any[];
   totalItems: number;
   itemsPerPage: number;
   currentPage: number;
-}>();
+  // Deklarasi Tipe: Hanya sebutkan tipenya
+  needColumnNumber: boolean;
+}>(), {
+  // Nilai Default Runtime: Didefinisikan di withDefaults
+  needColumnNumber: true,
+});
 
 // Emit event saat halaman paginasi diubah
 const emit = defineEmits(['update:currentPage']);
@@ -64,37 +69,43 @@ const visiblePages = computed(() => {
 
 <template>
   <div>
-    <div class="overflow-x-auto border border-gray-200 rounded-lg">
-      <table class="min-w-full divide-y divide-gray-200">
-        <slot name="header"></slot>
+    <div class="overflow-x-auto border border-gray-200">
+      <table class="min-w-full border-collapse border divide-y divide-gray-200">
         <thead class="bg-gray-50">
+        <slot name="header"></slot>
         <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th
+            v-if="needColumnNumber"
+            scope="col"
+              class="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             No.
           </th>
-          <th
+          <template
             v-for="col in columns"
             :key="col.key"
-            scope="col"
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            {{ col.label }}
-          </th>
+            <th
+              v-if="col.key != ''"
+              scope="col"
+              class="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              {{ col.label }}
+            </th>
+          </template>
         </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
         <tr v-if="data.length === 0">
-
-          <td :colspan="columns.length" class="px-6 py-10 text-center text-gray-500">
+          <td :colspan="columns.length + 1" class="px-6 py-10 border text-center text-gray-500">
             Tidak ada data untuk ditampilkan.
           </td>
         </tr>
         <tr v-else v-for="(item, itemIndex) in data" :key="item.id || itemIndex"
             class="hover:bg-gray-50">
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          <td v-if="needColumnNumber" class="px-6 py-4 border whitespace-nowrap text-sm text-gray-500">
             {{ (currentPage - 1) * itemsPerPage + itemIndex + 1 }}
           </td>
-          <td v-for="col in columns" :key="col.key" class="px-6 py-4 whitespace-nowrap text-sm">
+          <td v-for="col in columns" :key="col.key" class="px-6 py-4 border whitespace-nowrap text-sm">
             <slot :name="`cell(${col.key})`" :item="item" :value="item[col.key]" :index="itemIndex">
               <span class="text-gray-900">{{ item[col.key] }}</span>
             </slot>
